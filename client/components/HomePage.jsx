@@ -20,6 +20,7 @@ const HomePage = () => {
   return (
     <div id="homepage-container">
       <MovieInput onResponse={handleResponse}/>
+      <LeavingShows />
       <DisplayContainer 
         posterUrl={posterUrl} 
         streams={[amazon, hulu, netflix]}
