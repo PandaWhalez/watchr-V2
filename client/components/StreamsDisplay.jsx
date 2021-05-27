@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/StreamsDisplay.css';
 
-const StreamsDisplay = ({streams}) => {
+const StreamsDisplay = ({ streams }) => {
   const streamServices = [];
 
   if (streams[0]) {
