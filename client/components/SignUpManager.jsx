@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import StreamSelect from './StreamSelect.jsx';
 import './styles/SignUpManager.css';
+import { Link, Redirect } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 /*
 // Class component inherits from React.Component in order to
 // use functionality (e.g. setState) present in React.Component
@@ -126,6 +128,8 @@ const SignUpManager = () => {
     hulu: false,
     netflix: false,
   });
+  const [redirect, setRedirect] = useState(false);
+  
 
   const handleStreamChange = (e) => {
     setStreams((prev) => {
@@ -159,11 +163,19 @@ const SignUpManager = () => {
     })
       .then((res) => {
         console.log('RES: ', res);
-        return res.json()
+        // return res.json()
+        setRedirect(true);
       })
-      .then((data) => console.log('Data received: ', data))
       .catch((err) => console.log('Err received in fetch: ', err));
+
+      
+
   };
+
+  // const submitForm = (e) => {
+  //   e.preventDefault();
+  //   props.history.push('/login');
+  // }
 
   // Handle input change, receives e argument if passed in as the
   // callback to onChange
@@ -187,6 +199,9 @@ const SignUpManager = () => {
     '%cSignup Initiated!',
     'font-weight: bold; font-size: 53px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38), 6px 6px 0 rgb(226,91,14), 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)',
   );
+
+  if (redirect === true) return <Redirect to='/login'/>
+
   return (
     <div id="signup-container">
       <form id="signup-form" method="POST" action="/signup">
@@ -212,7 +227,10 @@ const SignUpManager = () => {
           streamPrefs={[streamsInput]}
           onStreamChange={handleStreamChange}
         />
-        <button type="submit" onClick={handleSubmitClick}> Sign Up </button>
+        
+            <button type="submit" onClick={handleSubmitClick}> 
+             Sign Up</button>
+    
       </form>
     </div>
   );

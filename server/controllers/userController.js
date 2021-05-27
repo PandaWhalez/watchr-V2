@@ -127,7 +127,7 @@ userController.getIMDB = (req, res, next) => {
   const options = {
     method: 'GET',
     url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-    params: { s: `${req.body.search}`, page: '1', type: 'movie', r: 'json' },
+    params: { s: `${req.body.search}`, page: '1', r: 'json' },
     headers: {
       'x-rapidapi-key': 'e0d178da4amsh91f0fb94afc02adp192ddbjsn3dcf07dc4de5',
       'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com',
@@ -138,7 +138,9 @@ userController.getIMDB = (req, res, next) => {
     .request(options)
     .then((response) => {
       console.log('imdb', response.data);
-      res.locals.imdb = response.data.Search[0].imdbID;
+      const { imdbID } = response.data.Search[0]
+      res.locals.imdb = imdbID;
+      console.log(res.locals.imdb)
       next();
     })
     .catch((error) => {
