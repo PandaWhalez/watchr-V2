@@ -163,9 +163,6 @@ const SignUpManager = () => {
     })
       .then((res) => {
         console.log('RES: ', res);
-        if (res.statusText !== 'OK') {
-          window.alert('Username already taken try again')
-        }
         // return res.json()
         setRedirect(true);
       })
