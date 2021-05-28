@@ -4,7 +4,7 @@ import DisplayContainer from './DisplayContainer.jsx';
 import './styles/HomePage.css';
 
 const HomePage = () => {
-  const [posterUrl, setPosterUrl] = useState('https://image.tmdb.org/t/p/w342/1qELdgcbbDjlpDDRwdYTl2MzuVu.jpg'); 
+  const [posterUrl, setPosterUrl] = useState('../../assets/charlesliarliar.png'); 
   const [amazon, setAmazon] = useState(true);
   const [hulu, setHulu] = useState(true);
   const [netflix, setNetflix] = useState(true);
