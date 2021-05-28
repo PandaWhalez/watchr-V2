@@ -1,71 +1,123 @@
-import React, { useState } from 'react';
-import './styles/LoginManager.css';
-import { Link, Redirect } from 'react-router-dom';
+/* eslint-disable arrow-body-style */
+import React, { useState, useEffect } from 'react';
+import './styles/Leaving.css';
+import LeavingDisplay from './LeavingDisplay.jsx';
+
+const axios = require('axios');
 
 //transition from class to function
-const LoginManager = () => {
+const LeavingShows = () => {
+  console.log('Made it to login manager!');
 
-  const [redirect, setRedirect] = useState(false);
+  const [service, useService] = useState('');
+  const [type, useType] = useState('');
+  const [leavingDisplayArray, setLeavingDisplayArray] = useState([]);
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    setRedirect(true);
-  }
+ 
 
-  console.log(
-    '%cLogin Initiated!',
-    'font-weight: bold; font-size: 53px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38), 6px 6px 0 rgb(226,91,14), 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)',
-  );
-
-  if (redirect === true) return <Redirect to='/homepage' />
-
-  return (
+    // useEffect(() => {
+      const handleChange = (e) => {
+        e.preventDefault();
+        const serviceArray = ['hulu', 'prime', 'netflix'];
+        const typeArray = ['movie', 'series'];
+        
     
-    <div id="login-container">
-      <form method="POST" action="/login" className="Login-Manager" onSubmit={formSubmit}>
-          Username:
-          <input
-            name="username"
-            className="user"
-            type="text"
-            // onChange={this.UserLoginHandler}
-            // value={this.state.username}
-          />
-    Password:
-          <input
-            name="password"
-            className="Password"
-            type="password"
-            // onChange={this.PasswordLoginHandler}
-            // value={this.state.password}
-          />
-          <br /> <br />
-          
-          <button type="submit" className="Loginbutton">
-            Log In
-          </button>
-          
-        </form>
-        <br /> <br />
-        <img
-          className="imagine"
-          src="https://i.ytimg.com/vi/xBasQG_6p40/maxresdefault.jpg"
-          // src="https://pyxis.nymag.com/v1/imgs/018/9f3/7996faec0d5437015d516b3b4171602894-28-best-horror-films.2x.rhorizontal.w700.jpg"
-          alt="movie reels"
-        />
-          <img
-            className="stander"
-            src="https://www.comingsoon.net/assets/styd/assets/uploads/2016/03/2000pos3.jpg"
-            alt="Pan's Labyrinth"
-          />
-          <img
-            className="stander2"
-            src="https://upload.wikimedia.org/wikipedia/en/6/6d/Evil_Dead_II_poster.jpg"
-            alt="Evil Dead II"
-           />
-      </div>
-      
-    );
+        if (serviceArray.includes(e.target.value.toLowerCase())) {
+          useService(`${e.target.value.toLowerCase()}`);
+        }
+        if (typeArray.includes(e.target.value.toLowerCase())) {
+          useType(`${e.target.value.toLowerCase()}`);
+        }
+    
+        
+        const options = {
+          method: 'GET',
+          url: 'https://streaming-availability.p.rapidapi.com/leaving',
+          params: { service, country: 'us', type },
+          headers: {
+            'x-rapidapi-key': 'e0d178da4amsh91f0fb94afc02adp192ddbjsn3dcf07dc4de5',
+            'x-rapidapi-host': 'streaming-availability.p.rapidapi.com',
+          },
+        };
+
+      axios
+          .request(options)
+          .then((response) => {
+            console.log(response.data.results);
+            setLeavingDisplayArray(response.data.results);
+            return response.data.results;
+          //   response.data.results.forEach((element, index) => {
+          //     boxes.push(
+          //       <LeavingDisplay index={index} img={element.posterURLs['342']} />,
+          //     );
+          //   });
+
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        }
+        console.log('type is: ', type);
+    // });
+     
+        const refresh = (e) => { 
+          e.preventDefault();
+          handleChange(e);
+        };
+
+    // axiosFetch()
+    //   .then(data => {
+    //     data.forEach((element, index) => {
+    //       boxes.push(
+    //               <LeavingDisplay index={index} img={element.posterURLs['342']} />,
+    //             );
+    //     })
+    //   })
+    // console.log('axiosFetch returned: ', axiosFetch());
+
+
+    // axios
+    //   .request(options)
+    //   .then((response) => {
+    //     console.log(response.data.results);
+    //     boxes = [];
+    //     response.data.results.forEach((element, index) => {
+    //       boxes.push(
+    //         <LeavingDisplay index={index} img={element.posterURLs['342']} />,
+    //       );
+    //     });
+    //     console.log('boxes: ', boxes);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+
+  //console.log('bleh', boxes);
+  return (
+    <div id="leaving">
+    <h1>Products Leaving For:</h1>
+    <select id="leaving-service" onChange={handleChange}>
+        <option>Choose Service:</option>
+        <option>Netflix</option>
+        <option>Prime</option>
+        <option>Hulu</option>
+      </select>
+      <select id="leaving-service" onChange={handleChange}>
+        <option>Choose Type:</option>
+        <option>Movie</option>
+        <option>Series</option>
+      </select>
+      <button onClick={refresh}>
+        Search
+        </button>
+    <div id="leaving-container">
+      {leavingDisplayArray.length > 0 ? (
+      leavingDisplayArray.map((movie) => (
+        <LeavingDisplay img={movie.posterURLs['342']} />))
+  ) : (<div></div>)}
+    </div>
+    </div>
+  );
 };
 
-export default LoginManager;
+export default LeavingShows;
