@@ -5,7 +5,7 @@ import './styles/HomePage.css';
 import LeavingButton from './LeavingButton.jsx';
 
 const HomePage = () => {
-  const [posterUrl, setPosterUrl] = useState('https://image.tmdb.org/t/p/w342/1qELdgcbbDjlpDDRwdYTl2MzuVu.jpg'); 
+  const [posterUrl, setPosterUrl] = useState('../../assets/charlesliarliar.png'); 
   const [amazon, setAmazon] = useState(true);
   const [hulu, setHulu] = useState(true);
   const [netflix, setNetflix] = useState(true);
