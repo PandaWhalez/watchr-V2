@@ -1,0 +1,12 @@
+#leaving {
+  padding: 2rem;
+  border: 0.5rem double rgb(124, 0, 0);
+  background-color: rgb(213, 19, 19);
+}
+
+#leaving-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
